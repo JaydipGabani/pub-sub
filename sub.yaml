@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sub
+  namespace: sub
+  labels:
+    app: sub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sub
+  template:
+    metadata:
+      labels:
+        app: sub
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "checkout"
+        dapr.io/enable-api-logging: "true"
+        dapr.io/app-port: "6002"
+    spec:
+      containers:
+      - name: go-sub
+        image: jd/sub:latest
+        imagePullPolicy: Never
