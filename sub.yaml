@@ -1,8 +1,35 @@
+---
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub
+  namespace: kube-system
+spec:
+  type: pubsub.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: redis-master.default.svc.cluster.local:6379
+  - name: redisPassword
+    secretKeyRef: 
+      name: redis
+      key: redis-password
+# ---
+# apiVersion: dapr.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: pubsub
+#   namespace: kube-system
+# spec:
+  # type: pubsub.in-memory
+  # version: v1
+  # metadata: []
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sub
-  namespace: sub
+  namespace: kube-system
   labels:
     app: sub
 spec:
@@ -16,11 +43,14 @@ spec:
         app: sub
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/app-id: "checkout"
+        dapr.io/app-id: "subscriber"
         dapr.io/enable-api-logging: "true"
         dapr.io/app-port: "6002"
     spec:
       containers:
       - name: go-sub
-        image: jd/sub:latest
-        imagePullPolicy: Never
+        image: docker.io/jaydipgabani/dummy-subscriber:test
+        imagePullPolicy: Always
+        env:
+        - name: NUMBER
+          value: "1000"
