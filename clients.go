@@ -1,4 +1,3 @@
-//
 package main
 
 import (
@@ -24,7 +23,7 @@ func (client *KustoIngestionClient) SendAsync(msg PubsubMsg) error {
 
 	functionKey := os.Getenv("FUNCTIONKEY")
 	if functionKey == "" {
-		log.Fatalf("Failed to set function key")
+		log.Fatalf("Failed to set function key env var")
 	}
 
 	requestUri := targetUri + "?code=" + functionKey

@@ -30,9 +30,9 @@ type PubsubMsg struct {
 	ResourceNamespace     string            `json:"resourceNamespace,omitempty"`
 	ResourceName          string            `json:"resourceName,omitempty"`
 	ResourceLabels        map[string]string `json:"resourceLabels,omitempty"`
-    // Additional Metadata for benchmarking
-    BrokerName            string            `json:"brokerName,omitempty"`
-    Timestamp             string            `json:"timestamp,omitempty"`
+	// Additional Metadata for benchmarking
+	BrokerName            string            `json:"brokerName,omitempty"`
+	Timestamp             string            `json:"timestamp,omitempty"`
 }
 
 var sub = &common.Subscription{
@@ -59,7 +59,7 @@ func main() {
 			duration := endTime.Sub(startTime)
 			log.Printf("Total events received: %d, Time taken: %v", eventCount, duration)
 			panic("test")
-		}
+		} 
 		time.Sleep(20 * time.Second)
 	}
 }
@@ -93,6 +93,6 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 
 	eventCount++
 	log.Printf("%#v", eventCount)
-
+	
 	return false, nil
 }
