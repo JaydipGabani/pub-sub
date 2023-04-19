@@ -54,3 +54,7 @@ spec:
         env:
         - name: NUMBER
           value: "1000"
+        - name: TARGETURI
+          value: ""
+        - name: FUNCTIONKEY
+          value: ""

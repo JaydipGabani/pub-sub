@@ -30,6 +30,9 @@ type PubsubMsg struct {
 	ResourceNamespace     string            `json:"resourceNamespace,omitempty"`
 	ResourceName          string            `json:"resourceName,omitempty"`
 	ResourceLabels        map[string]string `json:"resourceLabels,omitempty"`
+	// Additional Metadata for benchmarking
+	BrokerName            string            `json:"brokerName,omitempty"`
+	Timestamp             string            `json:"timestamp,omitempty"`
 }
 
 var sub = &common.Subscription{
@@ -66,6 +69,8 @@ var startTime time.Time
 var endTime time.Time
 var flag bool
 
+var kustoIngestionClient = KustoIngestionClient{}
+
 func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
 	var msg PubsubMsg
 	jsonInput, err := strconv.Unquote(string(e.RawData))
@@ -78,8 +83,14 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 	if flag {
 		startTime = time.Now() // record start time
 		flag = false
-	} 
-	
+	}
+
+	err = kustoIngestionClient.SendAsync(msg)
+	if err != nil {
+		// Continue if ingestion error, to do track count of these
+		log.Printf("ingestion error %v", err)
+	}
+
 	eventCount++
 	log.Printf("%#v", eventCount)
 	
