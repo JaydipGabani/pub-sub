@@ -21,9 +21,9 @@ spec:
 #   name: pubsub
 #   namespace: kube-system
 # spec:
-  # type: pubsub.in-memory
-  # version: v1
-  # metadata: []
+#   type: pubsub.in-memory
+#   version: v1
+#   metadata: []
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -49,12 +49,12 @@ spec:
     spec:
       containers:
       - name: go-sub
-        image: docker.io/jaydipgabani/dummy-subscriber:test
+        image: docker.io/noreisch/test-subscriber:0.0.13
         imagePullPolicy: Always
         env:
-        - name: NUMBER
-          value: "1000"
         - name: TARGETURI
           value: ""
         - name: FUNCTIONKEY
           value: ""
+        - name: INGESTIONSERVICEBATCHSIZE
+          value: "1000"

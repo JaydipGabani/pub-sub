@@ -12,7 +12,7 @@ import (
 )
 
 type PubsubMsg struct {
-	Key string `json:"key,omitempty"`
+	Key                   string            `json:"key,omitempty"`
 	ID                    string            `json:"id,omitempty"`
 	Details               interface{}       `json:"details,omitempty"`
 	EventType             string            `json:"eventType,omitempty"`
@@ -33,6 +33,11 @@ type PubsubMsg struct {
 	// Additional Metadata for benchmarking
 	BrokerName            string            `json:"brokerName,omitempty"`
 	Timestamp             string            `json:"timestamp,omitempty"`
+	UserAgent             string            `json:"userAgent,omitempty"`
+	CorrelationId         string            `json:"correlationId,omitempty"`
+	PublishedTimestamp    string            `json:"publishedTimestamp,omitempty"`
+	ReceivedTimestamp     string            `json:"receivedTimestamp,omitempty"`
+	BatchCorrelationId    string            `json:"batchCorrelationId,omitempty"`
 }
 
 var sub = &common.Subscription{
@@ -69,9 +74,10 @@ var startTime time.Time
 var endTime time.Time
 var flag bool
 
-var kustoIngestionClient = KustoIngestionClient{}
+var kustoIngestionClient = NewKustoIngestionClient()
 
 func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
+	receivedTimestamp := time.Now().UTC().Format("2006-01-02T15:04:05.000Z")
 	var msg PubsubMsg
 	jsonInput, err := strconv.Unquote(string(e.RawData))
 	if err != nil {
@@ -84,6 +90,9 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 		startTime = time.Now() // record start time
 		flag = false
 	}
+
+	msg.UserAgent = "Subscriber"
+	msg.ReceivedTimestamp = receivedTimestamp
 
 	err = kustoIngestionClient.SendAsync(msg)
 	if err != nil {
