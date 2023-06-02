@@ -1,0 +1,8 @@
+global:
+  k8sLabels:
+    app.kubernetes.io/component: "sidecar-injector"
+    app.kubernetes.io/managed-by: "Helm"
+    app.kubernetes.io/name: "dapr"
+    app.kubernetes.io/part-of: "dapr"
+    app.kubernetes.io/version: 1.10.4
+    admissions.enforcer/disabled: "true"

@@ -1,0 +1,50 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  annotations:
+    meta.helm.sh/release-name: dapr
+    meta.helm.sh/release-namespace: dapr-system
+  creationTimestamp: "2023-04-17T19:12:43Z"
+  generation: 2
+  labels:
+    app: dapr-sidecar-injector
+    app.kubernetes.io/component: sidecar-injector
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: dapr
+    app.kubernetes.io/part-of: dapr
+    app.kubernetes.io/version: 1.10.5
+  name: dapr-sidecar-injector
+  resourceVersion: "3182754"
+  uid: 863e0a4c-c818-40b2-8038-a1f6f6acc52f
+webhooks:
+- admissionReviewVersions:
+  - v1
+  - v1beta1
+  clientConfig:
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURNVENDQWhtZ0F3SUJBZ0lRYUVBZng2aUxCUmNSZ3RpazVoU0JwVEFOQmdrcWhraUc5dzBCQVFzRkFEQWoKTVNFd0h3WURWUVFERXhoa1lYQnlMWE5wWkdWallYSXRhVzVxWldOMGIzSXRZMkV3SGhjTk1qTXdOREUzTVRreApNalF3V2hjTk16TXdOREUwTVRreE1qUXdXakFqTVNFd0h3WURWUVFERXhoa1lYQnlMWE5wWkdWallYSXRhVzVxClpXTjBiM0l0WTJFd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUURnMGJjVzlHYzgKdllaVjdPNDd0cCtLNFBnZFdPeWZKZCthUWdzUHRNZmFrVVoyS1UzRHVtYWhyb2JsTEZkNzZ3cE43ekhUOFNhNwpZYnM1OW9RaS84VDk5eFU1KzcyNEUzaUk5RnR4dWI5VkxtQUZuS3lNSUlUaWtpQldmd0hienZ6Y3ZTMEdZMTdGCnh2dnZieFNPL1laazNUR2xxYm80NmhndytzWng4V3FZbDBQQjVlbmhaOURoa2NoWDZqQndubEx0NGpDNkxRNHMKOVpkdm5FSGk5VTQvYk13U1JKYWFlSVF1Q0RoMTh5cHAybnErMm9ScE01U29SZis0elFKK1VZVkZPT3d5Q05tSworVE9PYjM5bDVWY2pqaktyS3JZS1d2SmJNU0l1TzVCbVVodmN0SXdIa25SYTdPaCtNcG1zZDFJVFEzUTl2b24yClpPdHhwZlVzRlRlTEFnTUJBQUdqWVRCZk1BNEdBMVVkRHdFQi93UUVBd0lDcERBZEJnTlZIU1VFRmpBVUJnZ3IKQmdFRkJRY0RBUVlJS3dZQkJRVUhBd0l3RHdZRFZSMFRBUUgvQkFVd0F3RUIvekFkQmdOVkhRNEVGZ1FVV1ZRcQpZcGpBNUo1S1NKVnJYaDhwbytlWnZsVXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBTkFKY1QxQllpL2NMVldvCmRkMVJ3Yk1TN0dOd0hoQm9aaEtDaW4zd0grbm05azBzV0NucHA1cmhrTWZZQWdyeG1iVXY0NE5DSjZ4VEJoRTMKVGNNSlBFdnJwazVIRThnalpSYkZvRWtvYjFic0MwU05TU1hoVnJKMUhZdjNXUFBJSllreVRFNU93UG00MktsRQptbWRCWkxia3NjckgyeTdpdGU0ajc4SjJJOHNPUlFJdFFMTm5rYVVRVEx2TUFsdUg0Si9xdUk0dTRtYVlFNTZiCnlzalZOZnRGTlh6SERGSzI5KzRKY1hrZW5TNWNFOWMrYU1HcGNyK3d4Sk5CRllUdkRkQUM3a2V4eVFHODA0bEwKODhGOXU0dmg4SzJLejRSbXNwQUlTcUZoeWFZSVhiUW1tbFFiT2hZQnRVMjd0YWhMVzdUbHNFZ0h6VjJzcXp4UQpVaUVmd3hjPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+    service:
+      name: dapr-sidecar-injector
+      namespace: dapr-system
+      path: /mutate
+      port: 443
+  failurePolicy: Ignore
+  matchPolicy: Equivalent
+  name: sidecar-injector.dapr.io
+  namespaceSelector:
+    matchExpressions:
+    - key: control-plane
+      operator: DoesNotExist
+  objectSelector: {}
+  reinvocationPolicy: Never
+  rules:
+  - apiGroups:
+    - ""
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    resources:
+    - pods
+    scope: '*'
+  sideEffects: None
+  timeoutSeconds: 10

@@ -3,7 +3,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: pubsub
-  namespace: kube-system
+  namespace: sub
 spec:
   type: pubsub.redis
   version: v1
@@ -19,17 +19,17 @@ spec:
 # kind: Component
 # metadata:
 #   name: pubsub
-#   namespace: kube-system
+#   namespace: sub
 # spec:
-  # type: pubsub.in-memory
-  # version: v1
-  # metadata: []
+#   type: pubsub.in-memory
+#   version: v1
+#   metadata: []
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sub
-  namespace: kube-system
+  namespace: sub
   labels:
     app: sub
 spec:
@@ -49,8 +49,8 @@ spec:
     spec:
       containers:
       - name: go-sub
-        image: docker.io/jaydipgabani/dummy-subscriber:test
-        imagePullPolicy: Always
+        image: fake-subscriber:latest
+        imagePullPolicy: Never
         env:
         - name: NUMBER
-          value: "1000"
+          value: "50000"
